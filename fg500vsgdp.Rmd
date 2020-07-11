@@ -61,18 +61,17 @@ I'll use `plots` folder to save maps created below.
 # function to create plots/maps
 wd_gdp_plot = function(i) {
   ggplot(wd_gdp) + 
-  geom_sf(aes(fill=.data[[i]])) + 
+  geom_sf(aes(fill=.data[[i]])) + theme_bw() + 
   theme(legend.position = "none",
         plot.title = element_text(colour = "orange", size = 24, face = "bold", hjust = 0.5),
         plot.caption = element_text(colour = "grey", size = 9, face = "italic")) + 
   scale_fill_manual(values = c("grey", "orange")) + 
-    labs(title = paste0("Countries with Annual GDP lower than annual revenue of"," ",i),
+    labs(title = paste0("Countries with GDP lower than annual revenue of"," ",i," in 2019"),
          caption = "Data Sources: \n(i) Fortune Global 500 2019 (https://bit.ly/gf500-2019)\n(ii) IMF World Economic Outlook 2019 (https://bit.ly/imf-weo-2019)")
 }
 
 #test function
 wd_gdp_plot(companies[7])
-
 
 #save all plots/maps as list item using for loop
 plot_list = list()
@@ -84,11 +83,38 @@ for (i in 1:length(companies)) {
 #save plots as png, saves separate file for each plot.
 for (i in 1:length(companies)) {
   file_name = paste("plots/wd_gdp_plot_", companies[i], ".png", sep="")
-  png(file_name, width = 1000, height = 800)
+  png(file_name, width = 1000, height = 600)
   print(plot_list[[companies[i]]])
   dev.off()
 }
 
+
+# function to create maps for a grid
+wd_gdp_plot1 = function(i) {
+  ggplot(wd_gdp) + 
+  geom_sf(aes(fill=.data[[i]])) + theme_bw() + 
+  theme(legend.position = "none",
+        plot.title = element_text(colour = "orange", size = 12, face = "bold", hjust = 0.5)) + 
+  scale_fill_manual(values = c("grey", "orange")) + 
+    labs(title = paste0(i))
+}
+
+#testing the function
+wd_gdp_plot1(companies[5])
+#save plots as list item
+plot_list1 = list()
+for (i in 1:length(companies)) {
+  p=wd_gdp_plot1(companies[i])
+  plot_list1[[companies[i]]] = p
+}
+
+#creating a panel using gridextra
+library(gridExtra)
+
+do.call(grid.arrange, c(plot_list1, list(ncol=2)))
+
+
 ```
 
+---
 [^1]: I downloaded the GDP data from the [IMF World Economic Output database](https://bit.ly/imf-weo-2019).
