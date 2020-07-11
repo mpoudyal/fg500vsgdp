@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Comparing country GDP with world's largest companies' annual revenue for 2019
-This document outlines the steps and functions to produce global maps highlighting countries with Annual GDPs lower than those of the companies in [Fortune Global 500 top 10 list](https://en.wikipedia.org/wiki/Fortune_Global_500#Fortune_Global_500_list_of_2019) for the year 2019.
+This document outlines the steps and functions to produce global maps highlighting countries with Annual GDPs[^1] lower than those of the companies in [Fortune Global 500 top 10 list](https://en.wikipedia.org/wiki/Fortune_Global_500#Fortune_Global_500_list_of_2019) for the year 2019.
 
 I'm using publicly available datasets and global maps from R package `rnaturalearth` to produce these maps using `ggplot2` and `sf` packages in R version 4.0.2.
 
@@ -90,3 +90,5 @@ for (i in 1:length(companies)) {
 }
 
 ```
+
+[^1]: I downloaded the GDP data from the [IMF World Economic Output database](https://bit.ly/imf-weo-2019).
