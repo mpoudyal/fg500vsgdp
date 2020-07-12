@@ -71,7 +71,7 @@ wd_gdp_plot = function(company) {
 }
 
 #test function
-wd_gdp_plot(companies[7])
+wd_gdp_plot(companies[1])
 
 #save all plots/maps as list item using for loop
 plot_list = list()
@@ -94,9 +94,9 @@ wd_gdp_plot1 = function(company) {
   ggplot(wd_gdp) + 
   geom_sf(aes(fill=.data[[company]])) + theme_bw() + 
   theme(legend.position = "none",
-        plot.title = element_text(colour = "orange", size = 12, face = "bold", hjust = 0.5)) + 
+        plot.title = element_text(colour = "orange", size = 10, face = "bold", hjust = 0.5)) + 
   scale_fill_manual(values = c("grey", "orange")) + 
-    labs(title = paste0(i))
+    labs(title = paste0(company))
 }
 
 #testing the function
@@ -111,7 +111,13 @@ for (i in 1:length(companies)) {
 #creating a panel using patchwork
 library(patchwork)
 
-wrap_plots(plot_list1, ncol = 2)
+mapgrid <- wrap_plots(plot_list1, ncol = 2)
+#add title and caption to the map panel
+mapgrid + plot_annotation(
+  title = "Countries with GDP lower than 2019 annual revenue of ...",
+  caption = "Data Sources:\n(i) Fortune Global 500 2019 (https://bit.ly/gf500−2019)\n(ii) IMF World Economic Outlook 2019 (https://bit.ly/imf−weo−2019)",
+  theme = theme(plot.title= element_text(colour = "orange", size = 20, face = "bold", hjust = 0.5),
+                plot.caption = element_text(colour = "grey", size = 7)))
 
 ```
 
