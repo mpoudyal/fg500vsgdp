@@ -66,7 +66,7 @@ wd_gdp_plot = function(company) {
         plot.title = element_text(colour = "orange", size = 24, face = "bold", hjust = 0.5),
         plot.caption = element_text(colour = "grey", size = 9, face = "italic")) + 
   scale_fill_manual(values = c("grey", "orange")) + 
-    labs(title = paste0("Countries with GDP lower than annual revenue of"," ",i," in 2019"),
+    labs(title = paste0("Countries with GDP lower than annual revenue of"," ",company," in 2019"),
          caption = "Data Sources: \n(i) Fortune Global 500 2019 (https://bit.ly/gf500-2019)\n(ii) IMF World Economic Outlook 2019 (https://bit.ly/imf-weo-2019)")
 }
 
@@ -89,12 +89,12 @@ for (i in 1:length(companies)) {
 }
 
 
-# function to create maps for a grid
+# function to create maps for a panel (i.e. without main title and caption)
 wd_gdp_plot1 = function(company) {
   ggplot(wd_gdp) + 
   geom_sf(aes(fill=.data[[company]])) + theme_bw() + 
   theme(legend.position = "none",
-        plot.title = element_text(colour = "orange", size = 10, face = "bold", hjust = 0.5)) + 
+        plot.title = element_text(colour = "orange", size = 12, face = "bold", hjust = 0.5)) + 
   scale_fill_manual(values = c("grey", "orange")) + 
     labs(title = paste0(company))
 }
@@ -113,11 +113,17 @@ library(patchwork)
 
 mapgrid <- wrap_plots(plot_list1, ncol = 2)
 #add title and caption to the map panel
-mapgrid + plot_annotation(
+mapgrid <- mapgrid + plot_annotation(
   title = "Countries with GDP lower than 2019 annual revenue of ...",
   caption = "Data Sources:\n(i) Fortune Global 500 2019 (https://bit.ly/gf500−2019)\n(ii) IMF World Economic Outlook 2019 (https://bit.ly/imf−weo−2019)",
-  theme = theme(plot.title= element_text(colour = "orange", size = 20, face = "bold", hjust = 0.5),
-                plot.caption = element_text(colour = "grey", size = 7)))
+  theme = theme(plot.title= element_text(colour = "orange", size = 24, face = "bold", hjust = 0.5),
+                plot.caption = element_text(colour = "grey", size = 8)))
+mapgrid
+
+#save map panel as image
+png("mapgrid.png", width=1000, height = 1400)
+mapgrid
+dev.off()
 
 ```
 
