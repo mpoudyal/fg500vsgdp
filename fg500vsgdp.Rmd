@@ -128,4 +128,4 @@ dev.off()
 ```
 
 ---
-[^1]: I downloaded the GDP data from the [IMF World Economic Output database](https://bit.ly/imf-weo-2019).
+[^1]: I downloaded the GDP data from the [IMF World Economic Outlook database](https://bit.ly/imf-weo-2019).
