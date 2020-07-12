@@ -59,9 +59,9 @@ str(wd_gdp)
 I'll use `plots` folder to save maps created below.
 ```{r plots}
 # function to create plots/maps
-wd_gdp_plot = function(i) {
+wd_gdp_plot = function(company) {
   ggplot(wd_gdp) + 
-  geom_sf(aes(fill=.data[[i]])) + theme_bw() + 
+  geom_sf(aes(fill=.data[[company]])) + theme_bw() + 
   theme(legend.position = "none",
         plot.title = element_text(colour = "orange", size = 24, face = "bold", hjust = 0.5),
         plot.caption = element_text(colour = "grey", size = 9, face = "italic")) + 
@@ -90,9 +90,9 @@ for (i in 1:length(companies)) {
 
 
 # function to create maps for a grid
-wd_gdp_plot1 = function(i) {
+wd_gdp_plot1 = function(company) {
   ggplot(wd_gdp) + 
-  geom_sf(aes(fill=.data[[i]])) + theme_bw() + 
+  geom_sf(aes(fill=.data[[company]])) + theme_bw() + 
   theme(legend.position = "none",
         plot.title = element_text(colour = "orange", size = 12, face = "bold", hjust = 0.5)) + 
   scale_fill_manual(values = c("grey", "orange")) + 
@@ -108,11 +108,10 @@ for (i in 1:length(companies)) {
   plot_list1[[companies[i]]] = p
 }
 
-#creating a panel using gridextra
-library(gridExtra)
+#creating a panel using patchwork
+library(patchwork)
 
-do.call(grid.arrange, c(plot_list1, list(ncol=2)))
-
+wrap_plots(plot_list1, ncol = 2)
 
 ```
 
