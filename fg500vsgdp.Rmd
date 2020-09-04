@@ -28,9 +28,9 @@ library(readxl) #to read excel files
 I've raw data in `data` folder.
 ```{r data_prep}
 #read gdp data
-gdp <- read_xlsx("data/imf_weo_2019.xlsx", col_names = T)
+gdp <- read_xlsx("data/imf_weo_2019.xlsx", col_names = T, na = ("n/a"))
 
-str(gdp)
+glimpse(gdp)
 
 #read fortune global top 10 companies' data
 gf500_top10 <- read_xlsx("data/fg500_2019_top10.xlsx", col_names = T)
@@ -42,16 +42,16 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 wd_gdp <- left_join(world, gdp,
                     by = c("geounit" = "Country"))
 
-str(wd_gdp)
+glimpse(wd_gdp)
 
 #add logical columns using whether gdp for a country is lower than that of top 10 companies' revenues
 companies <- c(gf500_top10$Company) #getting list of company names to use in functions below
 
 for (i in 1:length(companies)) {
-  wd_gdp[,companies[i]] = as.factor(wd_gdp$`2019 (US$ billions)` < gf500_top10$`Revenues ($billions)`[gf500_top10$Company==companies[i]])
+  wd_gdp[,companies[i]] = as.factor(wd_gdp$`2019` < gf500_top10$`Revenues ($billions)`[gf500_top10$Company==companies[i]])
 }
 
-str(wd_gdp)
+glimpse(wd_gdp)
 ```
 
 
@@ -61,7 +61,7 @@ I'll use `plots` folder to save maps created below.
 # function to create plots/maps
 wd_gdp_plot = function(company) {
   ggplot(wd_gdp) + 
-  geom_sf(aes(fill=.data[[company]])) + theme_bw() + 
+  geom_sf(aes(fill=.data[[company]])) + theme_bw() + coord_sf(ylim = c(-50,90)) + 
   theme(legend.position = "none",
         plot.title = element_text(colour = "orange", size = 24, face = "bold", hjust = 0.5),
         plot.caption = element_text(colour = "grey", size = 9, face = "italic")) + 
@@ -92,7 +92,7 @@ for (i in 1:length(companies)) {
 # function to create maps for a panel (i.e. without main title and caption)
 wd_gdp_plot1 = function(company) {
   ggplot(wd_gdp) + 
-  geom_sf(aes(fill=.data[[company]])) + theme_bw() + 
+  geom_sf(aes(fill=.data[[company]])) + theme_bw() + coord_sf(ylim = c(-50,90)) + 
   theme(legend.position = "none",
         plot.title = element_text(colour = "orange", size = 12, face = "bold", hjust = 0.5)) + 
   scale_fill_manual(values = c("grey", "orange")) + 
